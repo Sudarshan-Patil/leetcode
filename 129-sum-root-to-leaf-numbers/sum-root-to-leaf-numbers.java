@@ -14,27 +14,21 @@
  * }
  */
 class Solution {
-    int ans = 0;
     public int sumNumbers(TreeNode root) {
-        getSum(root, "");
-
-        return ans;
+        return getSum(root, 0);
     }
 
-    public void getSum(TreeNode root, String s) {
+    public int getSum(TreeNode root, int s) {
         if (root == null) {
-            return;
+            return 0;
         }
-        
+
+        s = s*10 + root.val;
+
         if (root.left == null && root.right == null) {
-            s += root.val;
-            ans += Integer.parseInt(s);
-            return;
+            return s;
         }
 
-        getSum(root.left, s+root.val);
-        getSum(root.right, s+root.val);
-
-        return;
+        return getSum(root.left, s) + getSum(root.right, s);
     } 
 }

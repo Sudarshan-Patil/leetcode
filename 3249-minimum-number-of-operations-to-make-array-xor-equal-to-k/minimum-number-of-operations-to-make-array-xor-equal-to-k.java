@@ -5,7 +5,7 @@ class Solution {
         for (int i=1; i<nums.length; i++) {
             ans ^= nums[i];
         }
-        System.out.println(ans + " : " + k);
+
         int count = 0;
         while (ans!=0 || k!=0) {
             if ((ans&1) != (k&1)) {

@@ -7,20 +7,11 @@ class Solution {
         int ans = 0;
         int l = limit;
         while (i<=j) {
-            l = limit;
-            if (i!=j &&people[i]+people[j] <= l) {
+            if (people[i]+people[j] <= limit) {
                 i++;
-                j--;
-                ans++;
-            } else {
-                int k=2;
-                while (k>0 && i<=j && l-people[j]>=0) {
-                    l = l-people[j];
-                    k--;
-                    j--;
-                }
-                ans++;
             }
+            j--;
+            ans++;
         }
 
         return ans;

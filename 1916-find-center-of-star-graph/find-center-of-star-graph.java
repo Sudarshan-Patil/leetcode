@@ -1,35 +1,12 @@
 class Solution {
     public int findCenter(int[][] edges) {
-        HashMap<Integer, ArrayList<Integer>> hm = new HashMap<>();
+        int s = edges[0][0];
+        int e = edges[0][1];
 
-        for (int i=0; i<edges.length; i++) {
-            int s = edges[i][0];
-            int e = edges[i][1];
-
-            if (!hm.containsKey(s)) {
-                ArrayList<Integer> t = new ArrayList<>();
-                t.add(e);
-                hm.put(s, t);
-            } else {
-                hm.get(s).add(e);
-            }
-
-            if (!hm.containsKey(e)) {
-                ArrayList<Integer> t = new ArrayList<>();
-                t.add(s);
-                hm.put(e, t);
-            } else {
-                hm.get(e).add(s);
-            }
+        if (edges[1][0] == s || edges[1][1] == s) {
+            return s;
+        } else {
+            return e;
         }
-
-        int n = hm.size()-1;
-        for (int key:hm.keySet()) {
-            if (hm.get(key).size() == n) {
-                return key;
-            }
-        }
-
-        return -1;
     }
 }

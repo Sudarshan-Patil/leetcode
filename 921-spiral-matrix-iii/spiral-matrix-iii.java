@@ -1,62 +1,59 @@
 class Solution {
+int minX, minY, maxX, maxY, index;
+
+    int[][] result;
+
     public int[][] spiralMatrixIII(int rows, int cols, int rStart, int cStart) {
-        int[][] ans = new int[rows*cols][2];
-        int n=0;
-        int count = 1;
-        int x = rStart;
-        int y = cStart;
-        int idx = 0;
-        ans[idx][0] = x;
-        ans[idx][1] = y;
-        idx++;
-        System.out.print("["+x+":"+y+"]");
-        while (n<Math.max(rows, cols)) {
-            for (int i=y+1; i<=y+count; i++) {
-                if (i<0 || i>=cols || x<0 || x>= rows) {
-                    continue;
-                }
-                System.out.print("["+x+":"+i+"]");
-                ans[idx][0] = x;
-                ans[idx][1] = i;
-                idx++;
-            }
-            y += count;
-            for (int i=x+1; i<=x+count; i++) {
-                if (i<0 || i>=rows || y<0 || y>=cols) {
-                    continue;
-                }
-                System.out.print("["+i+":"+y+"]");
-                ans[idx][0] = i;
-                ans[idx][1] = y;
-                idx++;
-            }
-            x += count;
-            count++;
+        
+        int n = cols * rows;
+        result = new int[n][];
 
-            for (int i=y-1; i>=y-count; i--) {
-                if (i<0 || i>=cols || x<0 || x>= rows) {
-                    continue;
-                }
-                System.out.print("["+x+":"+i+"]");
-                ans[idx][0] = x;
-                ans[idx][1] = i;
-                idx++;
-            }
-            y -= count;
-            for (int i=x-1; i>=x-count; i--) {
-                if (i<0 || i>=rows || y<0 || y>= cols) {
-                    continue;
-                }
-                System.out.print("["+i+":"+y+"]");
-                ans[idx][0] = i;
-                ans[idx][1] = y;
-                idx++;
-            }
-            x -= count;
-            count++;
-            n++;
+        minX = cStart;
+        maxX = cStart + 1;
+        minY = rStart;
+        maxY = rStart;
+        index = 0;
+        result[index++] = new int[]{rStart, cStart};
+
+        while (true) {
+            if (minY >= 0){
+                right(Math.max(0, minX + 1), Math.min(cols - 1, maxX));
+            } 
+            maxY++;
+            if (index >= n) break;
+
+            if (maxX < cols) down(Math.max(0, minY + 1), Math.min(rows - 1, maxY));
+            minX--;
+            if (index >= n) break;
+
+            if (maxY < rows) left(Math.min(cols - 1, maxX - 1), Math.max(0, minX));
+            minY--;
+            if (index >= n) break;
+
+            if (minX >= 0) up(Math.min(rows - 1, maxY - 1), Math.max(0, minY));
+            maxX++;
+            if (index >= n) break;
         }
+        return result;
+    }
 
-        return ans;
+    public void right(int start, int end) {
+        for (int i = start; i <= end; i++) 
+            result[index++] = new int[]{minY, i};
+    }
+
+    public void left(int start, int end) {
+        for (int i = start; i >= end; i--) 
+           result[index++] = new int[]{maxY, i};
+    }
+
+    public void down(int start, int end) {
+        for (int i = start; i <= end; i++) 
+            result[index++] = new int[]{i, maxX};
+    }
+
+    public void up(int start, int end) {
+        for (int i = start; i >= end; i--) 
+           result[index++] = new int[]{i, minX};
     }
 }

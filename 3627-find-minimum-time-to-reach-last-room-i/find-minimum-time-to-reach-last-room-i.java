@@ -15,7 +15,11 @@ class Solution {
         int n = moveTime.length;
         int m = moveTime[0].length;
 
-        PriorityQueue<Node> q = new PriorityQueue<>(Comparator.comparingInt(a -> a.step));
+        PriorityQueue<Node> q = new PriorityQueue<>(new Comparator<Node>(){
+            public int compare(Node n1, Node n2) {
+                return n1.step-n2.step;
+            }
+        });
         boolean[][] vis = new boolean[n][m];
 
         int[][] time = new int[n][m];

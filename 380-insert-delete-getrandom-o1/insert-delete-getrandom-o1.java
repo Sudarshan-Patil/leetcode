@@ -16,8 +16,11 @@ class RandomizedSet {
     
     public boolean remove(int val) {
         if (hm.containsKey(val)) {
-            arr.set(hm.get(val), null);
+            int n = arr.size()-1;
+            arr.set(hm.get(val), arr.get(n));
+            hm.put(arr.get(n), hm.get(val));
             hm.remove(val);
+            arr.remove(arr.size()-1);
             return true;
         }
         return false;

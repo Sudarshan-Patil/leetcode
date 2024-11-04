@@ -8,13 +8,9 @@ class Solution {
             } else {
                 hm.put(nums[i], 1);
             }
+            ans += hm.get(nums[i])-1;
         }
-        for (int i=0; i<nums.length; i++) {
-            int key = nums[i];
-            ans += hm.get(key)-1;
-            hm.put(key, hm.get(key)-1);
-        }
-
+        
         return ans;
     }
 }

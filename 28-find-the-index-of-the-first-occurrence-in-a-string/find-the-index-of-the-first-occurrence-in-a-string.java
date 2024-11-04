@@ -1,14 +1,12 @@
 class Solution {
     public int strStr(String haystack, String needle) {
         String s = needle + "$" + haystack;
-
-        int[] lps = new int[s.length()];
+        int n = s.length();
+        int[] lps = new int[n];
         lps[0] = 0;
-
-        for (int i=1; i<s.length(); i++) {
+        for (int i=1; i<n; i++) {
             int x = lps[i-1];
-
-            while (s.charAt(x) != s.charAt(i)) {
+            while (s.charAt(i) != s.charAt(x)) {
                 if (x == 0) {
                     x = -1;
                     break;
@@ -19,9 +17,10 @@ class Solution {
             lps[i] = x+1;
 
             if (lps[i] == needle.length()) {
-                return i - 2 * needle.length();
+                return i-needle.length()-needle.length();
             }
         }
+
         return -1;
     }
 }

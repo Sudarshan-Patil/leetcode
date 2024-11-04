@@ -1,24 +1,43 @@
 class Solution {
     public int trap(int[] height) {
+        Deque<Integer> d = new LinkedList<>();
+        int ans = 0;
         int n = height.length;
+
         int[] pf = new int[n];
         int[] sf = new int[n];
-        int sum = 0;
 
-        pf[0] = height[0];
-        for (int i=1; i<n; i++) {
-            pf[i] = Math.max(pf[i-1], height[i]);
+        for (int i=0; i<n; i++) {
+            while (!d.isEmpty() && d.peekLast() <= height[i]) {
+                d.pollLast();
+            }
+
+            pf[i] = d.isEmpty() ? -1 : d.peekFirst();
+            d.offerLast(height[i]);
         }
 
-        sf[n-1] = height[n-1];
-        for (int i=n-2; i>=0; i--) {
-            sf[i] = Math.max(sf[i+1], height[i]);
+        d = new LinkedList<>();
+        for (int i=n-1; i>=0; i--) {
+            while (!d.isEmpty() && d.peekLast() <= height[i]) {
+                d.pollLast();
+            }
+
+            sf[i] = d.isEmpty() ? -1 : d.peekFirst();
+            d.offerLast(height[i]);
         }
 
         for (int i=1; i<n-1; i++) {
-            sum += Math.max(Math.min(pf[i], sf[i])-height[i], 0);
+            ans +=  Math.max(0, Math.min(sf[i], pf[i]) - height[i]);
         }
 
-        return sum;
+        return ans;
+    }
+
+    public void display(int[] A) {
+        for (int i=0; i<A.length; i++) {
+            System.out.print(A[i] + " ");
+        }
+        System.out.println();
+        return;
     }
 }

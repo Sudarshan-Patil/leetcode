@@ -1,37 +1,44 @@
 class Solution {
 	public boolean isPalindrome(String s) {
-		StringBuffer sb = new StringBuffer();
 		int n = s.length();
-		for (int i=n-1; i>=0; i--) {
-	char ch = s.charAt(i);
+		int start = 0;
+		int end = n-1;
 
+		while (start < end) {
+			Character ch1 = getValidChar(s.charAt(start));
+			if (ch1 == null) {
+				start++;
+				continue;
+}
+
+			Character ch2 = getValidChar(s.charAt(end));
+			if (ch2 == null) {
+				end--;
+				continue;
+}
+
+if (ch1 != ch2) {
+	return false;
+}
+
+start++;
+end--;
+}
+
+return true;
+}
+
+public Character getValidChar(char ch) {
 	if (
-			(ch >= 'a' && ch <= 'z') ||
-		(ch >= '0' && ch <= '9')
+(ch >= 'a' && ch <= 'z') || 
+(ch >= '0' && ch <= '9')
 ) {
-	sb.append(ch);
+	return ch;
 } else if (ch >= 'A' && ch <= 'Z') {
-	sb.append((char)(ch-'A'+'a'));
+	return (char)(ch-'A'+'a');
+} else {
+	return null;
 }
-}
-
-return sb.toString().compareTo(reverse(sb)) == 0;
-}
-
-public String reverse(StringBuffer sb) {
-	int i = 0;
-int n = sb.length();
-	int j = n-1;
-
-while (i<j) {
-	char temp =sb.charAt(i);
-	sb.setCharAt(i, sb.charAt(j));
-	sb.setCharAt(j, temp);
-	i++;
-	j--;
-}
-
-return sb.toString();
 }
 }
 

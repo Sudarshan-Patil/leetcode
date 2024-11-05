@@ -8,7 +8,7 @@ class Solution {
         for (int i=1; i<nums.length; i++) {
             if (nums[i] != nums[i-1]+1) {
                 if (i-1==j) {
-                    ans.add(nums[j]+"");
+                    ans.add(String.valueOf(nums[j]));
                 } else {
                     ans.add(nums[j] +"->"+nums[i-1]);
                 }

@@ -15,12 +15,12 @@
  */
 class Solution {
     public void flatten(TreeNode root) {
-        flatJoin(root);
+        flattenTree(root);
 
         return ;
     }
 
-    public TreeNode flatJoin(TreeNode root) {
+    public TreeNode flattenTree(TreeNode root) {
         if (root == null) {
             return null;
         }
@@ -29,15 +29,15 @@ class Solution {
             return root;
         }
 
-        TreeNode left = flatJoin(root.left);
-        TreeNode right = flatJoin(root.right);
-        
-        if (left!=null) {
-            left.right = root.right;    
+        TreeNode leftTail = flattenTree(root.left);
+        TreeNode rightTail = flattenTree(root.right);
+
+        if (leftTail!=null) {
+            leftTail.right = root.right;
             root.right = root.left;
             root.left = null;
         }
-        
-        return right == null ? left : right;
+
+        return rightTail!=null ? rightTail : leftTail;
     }
 }

@@ -14,17 +14,20 @@ class Solution {
 
         for (int i=0; i<nums.length; i++) {
             for (int j=0; j<nums.length-1; j++) {
-                if (nums[j] > nums[j+1] && tempArr[j] == tempArr[j+1]) {
+                if (nums[j] > nums[j+1]) {
+                    if (tempArr[j] != tempArr[j+1]) {
+                        return false;
+                    }
                     swap(nums, j, j+1);
-                }
+                } 
             }
         }
 
-        for (int i=0; i<n-1; i++) {
-            if (nums[i] > nums[i+1]) {
-                return false;
-            }
-        }
+        // for (int i=0; i<n-1; i++) {
+        //     if (nums[i] > nums[i+1]) {
+        //         return false;
+        //     }
+        // }
 
         return true;
     }

@@ -23,32 +23,36 @@ class Node {
 
 class Solution {
     public Node connect(Node root) {
-        Queue<Node> q = new LinkedList<>();
+        if (root == null) {
+            return null;
+        }
 
-        q.offer(root);
-        q.offer(null);
+        root.next = null;
 
-        while (!q.isEmpty()) {
-            Node temp = q.poll();
+        Node ans = root;
 
-            if (temp == null) {
-                if (q.isEmpty() || (q.size() == 1 && q.peek() == null)) {
-                    return root;
-                }
-                q.offer(null);
-            } else {
-                temp.next = q.peek();
+        Node preserved = new Node(-1);
+        Node prev = preserved;
 
-                if (temp.left!=null) {
-                    q.offer(temp.left);
-                }
+        while (root!=null) {
+            if (root.left != null) {
+                prev.next = root.left;
+                prev = prev.next;
+            }
 
-                if (temp.right!=null) {
-                    q.offer(temp.right);
-                }
+            if (root.right != null) {
+                prev.next = root.right;
+                prev = prev.next;
+            }
+
+            root = root.next;
+            if (root==null) {
+                root = preserved.next;
+                prev = preserved;
+                prev.next = null;
             }
         }
 
-        return root;
+        return ans;
     }
 }

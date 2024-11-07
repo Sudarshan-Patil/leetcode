@@ -1,53 +1,36 @@
 class Solution {
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        HashMap<String, Integer> hm = new HashMap<>();
-	for (int i=0; i<wordList.size(); i++) {
-		if (!hm.containsKey(wordList.get(i))) {
-			hm.put(wordList.get(i), 1);
-} else {
-	hm.put(wordList.get(i), hm.get(wordList.get(i))+1);
-}
-}
+        HashSet<String> hs = new HashSet<>(wordList);
 
-		Queue<String> q = new LinkedList<>();
-		Queue<Integer> counter = new LinkedList<>();
+        Queue<String> q = new LinkedList<String>();
+        q.offer(beginWord);
+        int ans = 1;
 
-		q.offer(beginWord);
-		counter.offer(1);
+        while (!q.isEmpty()) {
+            int n = q.size();
+            for (int i=0; i<n; i++) {
+                StringBuilder s = new StringBuilder(q.poll());
+                for (int j=0; j<s.length(); j++) {
+                    char old = s.charAt(j);
+                    for (int k=0; k<26; k++) {
+                        char t = (char)('a' + k);
+                        s.setCharAt(j, t);
+                        String temp = s.toString();
+                        if (hs.contains(temp)) {
+                            if (temp.equals(endWord)) {
+                                return ans + 1;
+                            }
+                            hs.remove(temp);
+                            q.offer(temp);
+                        }
+                    }
+                    s.setCharAt(j, old);
+                }
+            }
+            ans++;
+        }
 
-		while (!q.isEmpty()) {
-			String s = q.poll();
-int count = counter.poll();
 
-if (s.equals(endWord)) {
-	return count;
-}
-
-for (String key:hm.keySet()) {
-	if (mutate(s, key) && hm.get(key) > 0) {
-	q.offer(key);
-	counter.offer(count+1);
-	hm.put(key, hm.get(key)-1);
-}
-}
-}
-
-return 0;
-}
-
-public boolean mutate(String s1, String s2) {
-	int i=0;
-	int countlen = 0;
-	while (i<s1.length()) {
-		if (s1.charAt(i) != s2.charAt(i)) {
-			countlen++;
-}
-
-if (countlen > 1) {
-	return false;
-}
-i++;
-}
-return true;
+        return 0;
     }
 }

@@ -15,6 +15,7 @@ class Solution {
     public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
         HashMap<String, ArrayList<Pair>> hm = new HashMap<>();
         ans = new double[queries.size()];
+        Arrays.fill(ans, -1);
         Arrays.fill(ans, -1.0);
         for (int i=0; i<equations.size(); i++) {
             String start = equations.get(i).get(0);
@@ -37,15 +38,41 @@ class Solution {
             }
         }
 
-        HashMap<String, Boolean> vis = new HashMap<>();
-
+        // HashMap<String, Boolean> vis = new HashMap<>();
+        HashSet<String> vis = new HashSet<>();
+        Queue<Pair> q = new LinkedList<>();
         
         for (int i=0; i<queries.size(); i++) {
+            q = new LinkedList<>();
             String s1 = queries.get(i).get(0);
             String s2 = queries.get(i).get(1);
 
             vis.clear();
-            dfs(s1, s2, hm, vis, 1.0, i);
+            // dfs(s1, s2, hm, vis, 1.0, i);
+
+            q.offer(new Pair(s1, 1.0));
+            while (!q.isEmpty()) {
+                Pair p = q.poll();
+
+                if (!hm.containsKey(p.s)) {
+                    continue;
+                }
+
+                if (p.s.equals(s2)) {
+                    ans[i] = p.val;
+                    break;
+                }
+
+                for (int k=0; k<hm.get(p.s).size(); k++) {
+                    Pair temp = hm.get(p.s).get(k);
+
+                    if (!vis.contains(temp.s)) {
+                        vis.add(temp.s);
+                        q.offer(new Pair(temp.s, temp.val * p.val));
+                    }
+                }
+            }
+
         }
         
         return ans;

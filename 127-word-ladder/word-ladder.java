@@ -19,8 +19,6 @@ class Solution {
 			String s = q.poll();
 int count = counter.poll();
 
-System.out.println(s + " : " + count);
-
 if (s.equals(endWord)) {
 	return count;
 }

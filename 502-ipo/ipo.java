@@ -28,10 +28,6 @@ class Solution {
             pqC.offer(new Pair(capital[i], profits[i]));
         }
 
-        // while (!pq.isEmpty()) {
-        //     System.out.println(pq.poll());
-        // }
-
         int sum = w;
         for (int i=0; i<k; i++) {
             while (!pqC.isEmpty() && sum >= pqC.peek().c) {

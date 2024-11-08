@@ -8,7 +8,7 @@ class Solution {
         int carry = 0;
 
         while (i>=0 && j>=0) {
-            int temp = carry + Integer.parseInt(String.valueOf(a.charAt(i))) + Integer.parseInt(String.valueOf(b.charAt(j)));
+            int temp = carry + a.charAt(i)-'0' + b.charAt(j)-'0';
 
             sum = temp%2;
             carry = temp/2;
@@ -19,7 +19,7 @@ class Solution {
         }
 
         while (i>=0) {
-            int temp = carry + Integer.parseInt(String.valueOf(a.charAt(i)));
+            int temp = carry + a.charAt(i)-'0';
 
             
             sum = temp%2;
@@ -30,7 +30,7 @@ class Solution {
         }
 
         while (j>=0) {
-            int temp = carry + Integer.parseInt(String.valueOf(b.charAt(j)));
+            int temp = carry + b.charAt(j)-'0';
 
             sum = temp%2;
             carry = temp/2;

@@ -1,26 +1,39 @@
 class Solution {
-    int[][] dp;
     public int lengthOfLIS(int[] nums) {
-        dp = new int[nums.length][nums.length];
-        for (int i=0; i<nums.length; i++) {
-            Arrays.fill(dp[i], -1);
-        }
-
-        return getMax(0, -1, nums);
-    }
-
-    public int getMax(int i, int j, int[] nums) {
-        if (i==nums.length) {
-            return 0;
-        }
-
-        if (dp[i][j+1] == -1) {
-            dp[i][j+1] = getMax(i+1, j, nums);
-            if (j==-1 || nums[j] < nums[i]) {
-                dp[i][j+1] = Math.max(dp[i][j+1], getMax(i+1, i, nums) + 1);
+        ArrayList<Integer> sub = new ArrayList<>();
+        sub.add(nums[0]);
+        
+        for (int i = 1; i < nums.length; i++) {
+            int num = nums[i];
+            if (num > sub.get(sub.size() - 1)) {
+                sub.add(num);
+            } else {
+                int j = binarySearch(sub, num);
+                sub.set(j, num);
             }
         }
-
-        return dp[i][j+1];
+        
+        return sub.size();
+    }
+    
+    private int binarySearch(ArrayList<Integer> sub, int num) {
+        int left = 0;
+        int right = sub.size() - 1;
+        int mid = (left + right) / 2;
+        
+        while (left < right) {
+            mid = (left + right) / 2;
+            if (sub.get(mid) == num) {
+                return mid;
+            }
+            
+            if (sub.get(mid) < num) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+        
+        return right;
     }
 }

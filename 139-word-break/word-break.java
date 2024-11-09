@@ -1,15 +1,19 @@
 class Solution {
-    Boolean[] dp;
     public boolean wordBreak(String s, List<String> wordDict) {
         HashSet<String> hs = new HashSet<>();
-        hs.addAll(wordDict);
-        dp = new Boolean[s.length()];
+        int n = s.length();
 
-        return canBreak(s, 0, hs);
+        for (int i=0; i<wordDict.size(); i++) {
+            hs.add(wordDict.get(i));
+        }
+
+        Boolean[] dp = new Boolean[s.length()];
+
+        return isValid(0, n, s, hs, dp);
     }
 
-    public boolean canBreak(String s, int start, HashSet<String> hs) {
-        if (start == s.length()) {
+    public boolean isValid(int start, int n, String s, HashSet<String> hs, Boolean[] dp) {
+        if (start == n) {
             return true;
         }
 
@@ -17,19 +21,20 @@ class Solution {
             return dp[start];
         }
 
-        boolean res = false;
-        for (int i=start+1; i<=s.length(); i++) {
-            String curr = s.substring(start, i);
+        boolean res =false;
+        for (int i=start+1; i<=n; i++) {
+            String sb = s.substring(start, i);
 
-            if (!hs.contains(curr)) {
+            if (!hs.contains(sb)) {
                 continue;
             }
 
-            if (canBreak(s, i, hs)) {
+            if (isValid(i, n, s, hs, dp)) {
                 res = true;
                 break;
             }
         }
+
         dp[start] = res;
         return dp[start];
     }

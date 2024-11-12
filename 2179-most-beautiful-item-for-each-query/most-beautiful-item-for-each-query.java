@@ -1,38 +1,36 @@
 class Solution {
-
     public int[] maximumBeauty(int[][] items, int[] queries) {
-        int[] ans = new int[queries.length];
+        Arrays.sort(items, (a, b) -> {
+            return a[0]-b[0];
+        });
 
-        // Sort and store max beauty
-        Arrays.sort(items, (a, b) -> a[0] - b[0]);
-        int max = items[0][1];
-        for (int i = 0; i < items.length; i++) {
-            max = Math.max(max, items[i][1]);
-            items[i][1] = max;
+        for (int i=1; i<items.length; i++) {
+            items[i][1] = Math.max(items[i][1], items[i-1][1]);
         }
 
-        for (int i = 0; i < queries.length; i++) {
-            // answer i-th query
-            ans[i] = binarySearch(items, queries[i]);
+        int n = items.length;
+        int[] ans = new int[queries.length];
+
+        for (int i=0; i<queries.length; i++) {
+            int start = 0;
+            int end = n-1;
+            int target = queries[i];
+            int temp = 0;
+
+            while (start <= end) {
+                int mid = (start+end)/2;
+
+                if (items[mid][0] > target) {
+                    end = mid-1;
+                } else {
+                    temp = Math.max(temp, items[mid][1]);
+                    start = mid+1;
+                }
+            }
+
+            ans[i] = temp;
         }
 
         return ans;
-    }
-
-    private int binarySearch(int[][] items, int targetPrice) {
-        int l = 0;
-        int r = items.length - 1;
-        int maxBeauty = 0;
-        while (l <= r) {
-            int mid = (l + r) / 2;
-            if (items[mid][0] > targetPrice) {
-                r = mid - 1;
-            } else {
-                // Found viable price. Keep moving to right
-                maxBeauty = Math.max(maxBeauty, items[mid][1]);
-                l = mid + 1;
-            }
-        }
-        return maxBeauty;
     }
 }

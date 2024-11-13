@@ -1,27 +1,25 @@
 class Solution {
     public long countFairPairs(int[] nums, int lower, int upper) {
-        Arrays.sort(nums); 
-        long pairsWithUpper = findLessThanEqualTo(nums, upper);
-        long pairsWithLowerMinus1 = findLessThanEqualTo(nums, lower - 1);
-        return pairsWithUpper - pairsWithLowerMinus1;
+        Arrays.sort(nums);
+        return getCount(nums, upper) - getCount(nums, lower-1);
     }
 
-    private long findLessThanEqualTo(int[] nums, int targetSum) {
-        int n = nums.length;
-        long pairs = 0;
+    public long getCount(int[] nums, int target) {
         int left = 0;
-        int right = n - 1;
+        int right = nums.length-1;
+        long ans = 0;
 
+        while (left<right) {
+            long sum = nums[left]+nums[right];
 
-        while (left < right) {
-            if (nums[left] + nums[right] <= targetSum) {
-                pairs += (right - left);
-                left++; 
+            if (sum <= target) {
+                ans += right-left;
+                left++;
             } else {
-                right--; 
+                right--;
             }
         }
 
-        return pairs;
+        return ans;
     }
 }

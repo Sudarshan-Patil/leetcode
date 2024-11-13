@@ -23,7 +23,7 @@ class Solution {
                 if (items[mid][0] > target) {
                     end = mid-1;
                 } else {
-                    temp = Math.max(temp, items[mid][1]);
+                    temp = items[mid][1];
                     start = mid+1;
                 }
             }

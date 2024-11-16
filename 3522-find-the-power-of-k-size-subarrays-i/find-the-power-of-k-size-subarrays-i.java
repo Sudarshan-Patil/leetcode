@@ -4,7 +4,9 @@ class Solution {
         int[] ans = new int[n-k+1];
         int idx = 0;
         for (int i=k-1; i<n; i++) {
-            if (isValid(nums, i-k+1, i)) {
+            if (idx > 0 && ans[idx-1] != -1 && nums[i] == nums[i-1]+1) {
+                ans[idx++] = nums[i];
+            } else if (isValid(nums, i-k+1, i)) {
                 ans[idx++] = nums[i];
             } else {
                 ans[idx++] = -1;

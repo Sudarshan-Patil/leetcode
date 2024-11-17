@@ -1,26 +1,20 @@
 class Solution {
     public int shortestSubarray(int[] nums, int k) {
-        PriorityQueue<Pair<Long, Integer>> pq = new PriorityQueue<>(
-            (a,b) -> Long.compare(a.getKey(), b.getKey())
-        );
-        int ans = Integer.MAX_VALUE;
-        long sum = 0;
         int n = nums.length;
-
-        for (int i=0; i<n; i++) {
-            sum += nums[i];
-
-            if (sum >= k) {
-                ans = Math.min(ans, i+1);
-            }
-
-            while(!pq.isEmpty() && sum-pq.peek().getKey() >= k) {
-                ans = Math.min(ans, i-pq.poll().getValue());
-            }
-
-            pq.offer(new Pair<>(sum, i));
+        long[] sum = new long[n + 1];
+        for (int i = 0; i < n; i++) {
+            sum[i + 1] = sum[i] + nums[i];
         }
-
-        return ans == Integer.MAX_VALUE ? -1 : ans;
+        int[] q = new int[n + 1];
+        int l = 0, r = 0;
+        int ans = n + 1;
+        for (int i = 0; i < sum.length; i++) {
+            while (r > l && sum[i] >= sum[q[l]] + k)
+                ans = Math.min(ans, i - q[l++]);
+            while (r > l && sum[i] <= sum[q[r - 1]])
+                r--;
+            q[r++] = i;
+        }
+        return ans <= n ? ans : -1;
     }
 }

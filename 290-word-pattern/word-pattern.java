@@ -1,8 +1,8 @@
 class Solution {
     public boolean wordPattern(String pattern, String s) {
-        String[] str = s.split(" ");
+        String[] s1 = s.split(" ");
 
-        if (pattern.length() != str.length) {
+        if (pattern.length() != s1.length) {
             return false;
         }
 
@@ -10,21 +10,22 @@ class Solution {
         HashMap<String, Character> hm1 = new HashMap<>();
 
         for (int i=0; i<pattern.length(); i++) {
-            if (!hm.containsKey(pattern.charAt(i))) {
-                hm.put(pattern.charAt(i), str[i]);
-            } else {
-                if (!hm.get(pattern.charAt(i)).equals(str[i])) {
+            if (hm.containsKey(pattern.charAt(i))) {
+                if (!s1[i].equals(hm.get(pattern.charAt(i)))) {
                     return false;
                 }
+            } else {
+                hm.put(pattern.charAt(i), s1[i]);
             }
 
-            if (!hm1.containsKey(str[i])) {
-                hm1.put(str[i], pattern.charAt(i));
-            } else {
-                if (!hm1.get(str[i]).equals(pattern.charAt(i))) {
+            if (hm1.containsKey(s1[i])) {
+                if (pattern.charAt(i) != hm1.get(s1[i])) {
                     return false;
                 }
+            } else {
+                hm1.put(s1[i], pattern.charAt(i));
             }
+
         }
 
         return true;

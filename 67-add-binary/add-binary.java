@@ -13,7 +13,7 @@ class Solution {
             sum = temp%2;
             carry = temp/2;
 
-            sb.insert(0, sum);
+            sb.append(sum);
             i--;
             j--;
         }
@@ -25,7 +25,7 @@ class Solution {
             sum = temp%2;
             carry = temp/2;
 
-            sb.insert(0, sum);
+            sb.append(sum);
             i--;
         }
 
@@ -35,14 +35,14 @@ class Solution {
             sum = temp%2;
             carry = temp/2;
 
-            sb.insert(0, sum);
+            sb.append(sum);
             j--;
         }
 
         if (carry > 0) {
-            sb.insert(0, carry);
+            sb.append(carry);
         }
 
-        return sb.toString();
+        return sb.reverse().toString();
     }
 }

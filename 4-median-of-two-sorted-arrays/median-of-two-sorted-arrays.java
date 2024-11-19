@@ -6,12 +6,12 @@ class Solution {
         int n = nums2.length;
 
         if ((m+n)%2 == 0) {
-            for (int i=0; i<((m+n)/2)-1; ++i) {
+            for (int i=0; i<((m+n)/2)-1; i++) {
                 getMedian(nums1, nums2);
             }
             return (double)(getMedian(nums1, nums2) + getMedian(nums1, nums2))/2;
         } else {
-            for (int i=0; i<((m+n)/2); ++i) {
+            for (int i=0; i<((m+n)/2); i++) {
                 getMedian(nums1, nums2);
             }
             return (double)getMedian(nums1, nums2);

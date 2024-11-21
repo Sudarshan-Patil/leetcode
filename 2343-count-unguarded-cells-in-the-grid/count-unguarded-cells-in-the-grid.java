@@ -18,9 +18,9 @@ class Solution {
         }
 
         for (int i=0; i<walls.length; i++) {
-            matrix[walls[i][0]][walls[i][1]] = -1;
+            matrix[walls[i][0]][walls[i][1]] = 1;
         }
-
+        int count = 0;
         while (!q.isEmpty()) {
             Pair p = q.poll();
 
@@ -28,24 +28,18 @@ class Solution {
                 int x = p.x+dx[i];
                 int y = p.y+dy[i];
 
-                while (x>=0 && x<m && y>=0 && y<n && matrix[x][y] != -1 && matrix[x][y] != 1) {
-                    matrix[x][y] = 2;
+                while (x>=0 && x<m && y>=0 && y<n && matrix[x][y] != 1) {
+                    if (matrix[x][y] != 2) {
+                        matrix[x][y] = 2;
+                        count++;
+                    }
+                    
                     x = x+dx[i];
                     y = y+dy[i];
                 }
             }
         }
-        int count = 0;
-        for (int i=0; i<m; i++) {
-            for (int j=0; j<n; j++) {
-                System.out.print(matrix[i][j] + " ");
-                if (matrix[i][j] == 0) {
-                    count++;
-                }
-            }
-            System.out.println();
-        }
 
-        return count;
+        return m*n-guards.length-walls.length-count;
     }
 }

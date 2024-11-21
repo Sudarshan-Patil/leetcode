@@ -11,10 +11,10 @@ class Solution {
     int[] dy = {0, 1, 0, -1};
     public int countUnguarded(int m, int n, int[][] guards, int[][] walls) {
         int[][] matrix = new int[m][n];
-        Queue<Pair> q = new LinkedList<>();
+        Queue<int[]> q = new LinkedList<>();
         for (int i=0; i<guards.length; i++) {
             matrix[guards[i][0]][guards[i][1]] = 1;
-            q.offer(new Pair(guards[i][0],guards[i][1]));
+            q.offer(guards[i]);
         }
 
         for (int i=0; i<walls.length; i++) {
@@ -22,11 +22,11 @@ class Solution {
         }
         int count = 0;
         while (!q.isEmpty()) {
-            Pair p = q.poll();
+            int[] p = q.poll();
 
             for (int i=0; i<4; i++) {
-                int x = p.x+dx[i];
-                int y = p.y+dy[i];
+                int x = p[0]+dx[i];
+                int y = p[1]+dy[i];
 
                 while (x>=0 && x<m && y>=0 && y<n && matrix[x][y] != 1) {
                     if (matrix[x][y] != 2) {

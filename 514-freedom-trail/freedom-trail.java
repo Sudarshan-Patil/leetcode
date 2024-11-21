@@ -1,52 +1,42 @@
 class Solution {
+    int[][] dp;
     public int findRotateSteps(String ring, String key) {
-        char[] r = ring.toCharArray();
-        List<Integer>[] positions = new List[26];
-        
-        // Store the positions of each character in the ring
-        for (int i = 0; i < r.length; i++) {
-            int c = r[i] - 'a';
-            if (positions[c] == null) positions[c] = new ArrayList<>();
-            positions[c].add(i);
+        int ringLength = ring.length();
+        int keyLength = key.length();
+        dp = new int[ringLength][keyLength];
+        for (int i=0; i<ringLength; i++) {
+            Arrays.fill(dp[i], -1);
         }
-        
-        // Dynamic programming memoization
-        int[][] dp = new int[key.length()][r.length];
-        
-        // Start with the first character of the key at position 0
-        return helper(0, 0, positions, key.toCharArray(), r, dp);
+
+        return dfs(ring, key, 0, 0);
     }
-    
-    // Recursive function with memoization
-    int helper(int index, int pos, List<Integer>[] positions, char[] key, char[] ring, int[][] dp) {
-        // If all characters of the key have been matched, return 0
-        if (index == key.length) return 0;
-        
-        // If this state has already been computed, return the cached result
-        if (dp[index][pos] > 0) return dp[index][pos];
-        
-        // Current character in the key
-        char target = key[index];
-        
-        // List of possible positions of the current character in the ring
-        List<Integer> possiblePositions = positions[target - 'a'];
-        
-        // Minimum steps required to reach the current character from the current position
-        int minSteps = Integer.MAX_VALUE;
-        
-        // Iterate through possible positions and calculate minimum steps
-        for (int nextPos : possiblePositions) {
-            // Calculate the steps to move from the current position to the next position
-            int steps = Math.min(Math.abs(nextPos - pos), ring.length - Math.abs(nextPos - pos));
-            
-            // Calculate steps for remaining characters recursively
-            int totalSteps = steps + helper(index + 1, nextPos, positions, key, ring, dp);
-            
-            // Update the minimum steps
-            minSteps = Math.min(minSteps, totalSteps);
+
+    public int dfs(String ring, String key, int ringIndex, int keyIndex) {
+        if (keyIndex == key.length()) {
+            return 0;
         }
-        
-        // Cache the result and return
-        return dp[index][pos] = minSteps + 1;
+
+        if (dp[ringIndex][keyIndex] != -1) {
+            return dp[ringIndex][keyIndex];
+        }
+
+        int minSteps = Integer.MAX_VALUE;
+        for (int i=0; i<ring.length(); i++) {
+            if (ring.charAt(i) == key.charAt(keyIndex)) {
+                int steps = dfs(ring, key, i, keyIndex+1) + 1 + minDistance(ringIndex, i, ring.length());
+                minSteps = Math.min(minSteps, steps);
+            }
+        }
+
+        dp[ringIndex][keyIndex] = minSteps;
+
+        return dp[ringIndex][keyIndex];
+    }
+
+    public int minDistance(int ringIndex, int i, int ringLength) {
+        int clockDistance = Math.abs(ringIndex-i);
+        int antiClockDistance = ringLength-clockDistance;
+
+        return Math.min(clockDistance, antiClockDistance);
     }
 }

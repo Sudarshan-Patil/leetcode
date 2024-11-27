@@ -19,13 +19,11 @@ class Solution {
         }
 
         int lastRow = min.length - 1;
-        int minElement = min[lastRow][0];
-        for (int j = 1; j < min[lastRow].length; j++) {
-            if (min[lastRow][j] < minElement) {
-                minElement = min[lastRow][j];
-            }
+        int ans = min[lastRow][0];
+        for (int i=1; i<matrix[0].length; i++) {
+            ans = Math.min(ans, min[lastRow][i]);
         }
 
-        return minElement;
+        return ans;
     }
 }

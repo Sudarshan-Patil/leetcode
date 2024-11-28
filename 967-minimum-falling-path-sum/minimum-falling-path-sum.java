@@ -12,9 +12,9 @@ class Solution {
                     if (k<0 || k>=matrix[0].length) {
                         continue;
                     }
-                    temp = Math.min(temp, min[i-1][k] + matrix[i][j]);
+                    temp = Math.min(temp, min[i-1][k]);
                 }
-                min[i][j] = temp;
+                min[i][j] = temp + matrix[i][j];
             }
         }
 

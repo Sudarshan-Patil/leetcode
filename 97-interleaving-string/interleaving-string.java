@@ -1,40 +1,26 @@
-class Solution {
-    public boolean isInterleave(String s1, String s2, String s3) {
-        int k = s3.length();
-        Boolean[][] dp = new Boolean[s1.length()+1][s2.length()+1];
-        for (int i=0; i<=s1.length(); i++) {
-            Arrays.fill(dp[i], null);
-        }
-        return isValid(0, 0, 0, s1, s2, s3, dp);
-    }
+public class Solution {
+    public boolean isInterleave(String A, String B, String C) {
+        int m = A.length();
+        int n = B.length();
+        boolean[][] dp = new boolean[m + 1][n + 1];
+        if (m + n != C.length()) return false;
+        dp[0][0] = true;
 
-    public boolean isValid(int i, int j, int k, String s1, String s2, String s3, Boolean[][] dp) {
-        if (i==s1.length()) {
-            return s2.substring(j).equals(s3.substring(k));
-        }
+        for (int i = 0; i <= m; i++) {
+            for (int j = 0; j <= n; j++) {
+                if (i == 0 && j == 0) continue;
+                char c = C.charAt(i + j - 1);
 
-        if (j==s2.length()) {
-            return s1.substring(i).equals(s3.substring(k));
-        }
-
-        if (k == s3.length()) {
-            return false;
-        }
-
-        if (dp[i][j] == null) {
-            boolean ans = false;
-
-            if (s1.charAt(i) == s3.charAt(k)) {
-                ans |= isValid(i+1, j, k+1, s1, s2, s3, dp);
+                if (i > 0 && c == A.charAt(i - 1)) {
+                    dp[i][j] = dp[i - 1][j];
+                }
+                if (j > 0 && c == B.charAt(j - 1)) {
+                    dp[i][j] = dp[i][j] || dp[i][j - 1];
+                }
             }
-
-            if (s2.charAt(j) == s3.charAt(k)) {
-                ans |= isValid(i, j+1, k+1, s1, s2, s3, dp);
-            }
-             dp[i][j] = ans;
         }
 
-       
-        return dp[i][j];
+        return dp[m][n];
     }
 }
+

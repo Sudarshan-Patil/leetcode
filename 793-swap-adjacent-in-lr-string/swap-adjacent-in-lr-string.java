@@ -1,45 +1,37 @@
 class Solution {
-    public boolean canTransform(String start, String end) {
-        if (!start.replace("X", "").equals(end.replace("X", "")))
+    public boolean canTransform(String start, String result) {
+        if (start.length() != result.length()) {
             return false;
-        
-        int p1 = 0;
-        int p2 = 0;
-        
-        while(p1 < start.length() && p2 < end.length()){
-            
-            // get the non-X positions of 2 strings
-            while(p1 < start.length() && start.charAt(p1) == 'X'){
-                p1++;
-            }
-            while(p2 < end.length() && end.charAt(p2) == 'X'){
-                p2++;
-            }
-            
-            //if both of the pointers reach the end the strings are transformable
-            if(p1 == start.length() && p2 == end.length()){
-                return true;
-            }
-            // if only one of the pointer reach the end they are not transformable
-            if(p1 == start.length() || p2 == end.length()){
-                return false;
-            }
-            
-            if(start.charAt(p1) != end.charAt(p2)){
-                return false;
-            }
-            // if the character is 'L', it can only be moved to the left. p1 should be greater or equal to p2.
-            if(start.charAt(p1) == 'L' && p2 > p1){
-                return false;
-            }
-            // if the character is 'R', it can only be moved to the right. p2 should be greater or equal to p1.
-            if(start.charAt(p1) == 'R' && p1 > p2){
-                return false;
-            }
-            p1++;
-            p2++;
         }
-        return true;
+        
+        int startIndex = 0;
+        int resultIndex = 0;
+
+        
+        return canTransform(0, start, 0, result);
     }
-    
+
+    private boolean canTransform(int startIndex, String start, int resultIndex, String result) {
+        while (startIndex < start.length() && start.charAt(startIndex) == 'X') {
+            startIndex++;
+        }
+
+        while (resultIndex < result.length() && result.charAt(resultIndex) == 'X') {
+            resultIndex++;
+        }
+
+        if (startIndex == start.length() && resultIndex == result.length()) {
+            return true;
+        }
+
+        if ((startIndex == start.length() || resultIndex == result.length()) || start.charAt(startIndex) != result.charAt(resultIndex)) {
+            return false;
+        }
+
+        if ((start.charAt(startIndex) == 'L' && startIndex >= resultIndex) || (start.charAt(startIndex) == 'R' && startIndex <= resultIndex)) {
+            return canTransform(startIndex + 1, start, resultIndex + 1, result);
+        }
+
+        return false;
+    }
 }

@@ -31,14 +31,13 @@ class Solution {
     }
 
     public ListNode reverse(ListNode head, ListNode prev, ListNode old, int r) {
-        if (head == null) {
+        if (head == null || r<0) {
+            if (r < 0) {
+                old.next = head;
+            }
             return prev;
         }
 
-        if (r < 0) {
-            old.next = head;
-            return prev;
-        }
         r--;
 
         ListNode temp = head.next;

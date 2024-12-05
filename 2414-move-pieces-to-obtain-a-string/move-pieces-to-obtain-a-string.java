@@ -2,24 +2,26 @@ class Solution {
     public boolean canChange(String start, String target) {
         int i=0;
         int j=0;
+        char[] s1 = start.toCharArray();
+        char[] s2 = target.toCharArray();
 
-        while (i<start.length() || j<target.length()) {
-            while (i<start.length() && start.charAt(i) == '_') {
+        while (i<s1.length || j<s2.length) {
+            while (i<s1.length && s1[i] == '_') {
                 i++;
             }
 
-            while (j<target.length() && target.charAt(j) == '_') {
+            while (j<s2.length && s2[j] == '_') {
                 j++;
             }
             
-            if (i==start.length() || j==target.length()) {
-                return i == start.length() && j == target.length();
+            if (i==s1.length || j==s2.length) {
+                return i == s1.length && j == s2.length;
             }
 
             if (
-                start.charAt(i) != target.charAt(j) ||
-                (start.charAt(i) == 'L' && i<j) ||
-                (start.charAt(i) == 'R' && i>j)
+                s1[i] != s2[j] ||
+                (s1[i] == 'L' && i<j) ||
+                (s1[i] == 'R' && i>j)
             ) {
                 return false;        
             }

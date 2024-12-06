@@ -1,9 +1,12 @@
 class Solution {
     public int maxCount(int[] banned, int n, int maxSum) {
-        Arrays.sort(banned);
+        HashSet<Integer> hs = new HashSet<>();
+        for (int i=0; i<banned.length; i++) {
+            hs.add(banned[i]);
+        }
         int count = 0;
         for (int num = 1; num<=n; num++) {
-            if (isBanned(num, banned)) {
+            if (hs.contains(num)) {
                 continue;
             }
 

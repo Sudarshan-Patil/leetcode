@@ -1,45 +1,36 @@
 class Solution {
     public int minTaps(int n, int[] ranges) {
-        // Create an array to track the maximum reach for each position
-        int[] maxReach = new int[n + 1];
+        int[][] range = new int[n+1][2];
 
-        // Calculate the maximum reach for each tap
-        for (int i = 0; i < ranges.length; i++) {
-            // Calculate the leftmost position the tap can reach
-            int start = Math.max(0, i - ranges[i]);
-            // Calculate the rightmost position the tap can reach
-            int end = Math.min(n, i + ranges[i]);
-
-            // Update the maximum reach for the leftmost position
-            maxReach[start] = Math.max(maxReach[start], end);
+        for (int i=0; i<ranges.length; i++) {
+            range[i][0] = Math.max(0, i-ranges[i]);
+            range[i][1] = Math.min(n, i+ranges[i]);
         }
-        
-        // Number of taps used
-        int taps = 0;
-        // Current rightmost position reached
-        int currEnd = 0;
-        // Next rightmost position that can be reached
-        int nextEnd = 0;
 
-        // Iterate through the garden
-        for (int i = 0; i <= n; i++) {
-            // Current position cannot be reached
-            if (i > nextEnd) {
+        Arrays.sort(range, (a,b) -> {
+            return a[0]-b[0];
+        });
+
+        int jump = 0;
+        int currentEnd = 0;
+        int i = 0;
+        int farthestEnd = 0;
+
+        while (currentEnd < n) {
+            jump++;
+            farthestEnd = 0;
+            while (i<range.length && range[i][0] <= currentEnd) {
+                farthestEnd = Math.max(farthestEnd, range[i][1]);
+                i++;
+            }
+
+            if (farthestEnd <= currentEnd) {
                 return -1;
             }
 
-            // Increment taps when moving to a new tap
-            if (i > currEnd) {
-                taps++;
-                // Move to the rightmost position that can be reached
-                currEnd = nextEnd;
-            }
-
-            // Update the next rightmost position that can be reached
-            nextEnd = Math.max(nextEnd, maxReach[i]);
+            currentEnd = farthestEnd;
         }
 
-        // Return the minimum number of taps used
-        return taps;
+        return jump;
     }
 }

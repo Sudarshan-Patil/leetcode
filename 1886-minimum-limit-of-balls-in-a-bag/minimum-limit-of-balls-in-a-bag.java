@@ -24,7 +24,7 @@ class Solution {
         int op = 0;
 
         for (int i=0; i<nums.length; i++) {
-            op += (int)Math.ceil(nums[i]/(double)middle)-1;
+            op += (nums[i]-1)/middle;
 
             if (op > max) {
                 return false;

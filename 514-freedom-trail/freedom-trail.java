@@ -1,42 +1,36 @@
 class Solution {
-    int[][] dp;
     public int findRotateSteps(String ring, String key) {
-        int ringLength = ring.length();
-        int keyLength = key.length();
-        dp = new int[ringLength][keyLength];
-        for (int i=0; i<ringLength; i++) {
+        int ringlen = ring.length();
+        int keylen = key.length();
+        int[][] dp = new int[ringlen][keylen];
+        for (int i=0; i<ringlen; i++) {
             Arrays.fill(dp[i], -1);
         }
-
-        return dfs(ring, key, 0, 0);
+        return getMinCount(ring, key, 0, 0, dp, ringlen, keylen);
     }
 
-    public int dfs(String ring, String key, int ringIndex, int keyIndex) {
-        if (keyIndex == key.length()) {
+    public int getMinCount(String ring, String key, int ringIndex, int keyIndex, int[][] dp, int ringlen, int keylen) {
+        if (keyIndex == keylen) {
             return 0;
         }
 
-        if (dp[ringIndex][keyIndex] != -1) {
-            return dp[ringIndex][keyIndex];
-        }
-
-        int minSteps = Integer.MAX_VALUE;
-        for (int i=0; i<ring.length(); i++) {
-            if (ring.charAt(i) == key.charAt(keyIndex)) {
-                int steps = dfs(ring, key, i, keyIndex+1) + 1 + minDistance(ringIndex, i, ring.length());
-                minSteps = Math.min(minSteps, steps);
+        if (dp[ringIndex][keyIndex] == -1) {
+            int ans = Integer.MAX_VALUE;
+            for (int i=0; i<ringlen; i++) {
+                if (ring.charAt(i) == key.charAt(keyIndex)) {
+                    ans = Math.min(ans, getMinCount(ring, key, i, keyIndex+1, dp, ringlen, keylen) + 1 + minDistance(ringIndex, i, ringlen));
+                }
             }
+            dp[ringIndex][keyIndex] = ans;
         }
-
-        dp[ringIndex][keyIndex] = minSteps;
 
         return dp[ringIndex][keyIndex];
     }
+    
+    public int minDistance(int ringIndex, int i, int ringlen) {
+        int d1 = Math.abs(ringIndex-i);
+        int d2 = ringlen-d1;
 
-    public int minDistance(int ringIndex, int i, int ringLength) {
-        int clockDistance = Math.abs(ringIndex-i);
-        int antiClockDistance = ringLength-clockDistance;
-
-        return Math.min(clockDistance, antiClockDistance);
+        return Math.min(d1, d2);
     }
 }

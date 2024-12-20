@@ -15,51 +15,24 @@
  */
 class Solution {
     public TreeNode reverseOddLevels(TreeNode root) {
-        Deque<TreeNode> d = new LinkedList<>();
-        d.offerLast(root);
-        int step = 0;
-        while (!d.isEmpty()) {
-            int size = d.size();
-            while (size-- > 0) {
-                TreeNode temp = d.pollFirst();
-
-                if (temp.left != null) {
-                    d.offerLast(temp.left);
-                }
-
-                if (temp.right != null) {
-                    d.offerLast(temp.right);
-                }
-            }
-            ++step;
-            if (step%2 != 0) {
-                d = reverse(d);
-            }
-        }
-
+        reverse(root.left, root.right, 0);
         return root;
     }
 
-    public Deque<TreeNode> reverse(Deque<TreeNode> d) {
-        Deque<TreeNode> front  = new LinkedList<TreeNode>();
-        Deque<TreeNode> tail  = new LinkedList<TreeNode>();
-
-        while (!d.isEmpty()) {
-            TreeNode f = d.pollFirst();
-            TreeNode t = d.pollLast();
-
-            int temp = f.val;
-            f.val = t.val;
-            t.val = temp;
-
-            front.offerLast(f);
-            tail.offerFirst(t);
-        }
-        
-        while (!tail.isEmpty()) {
-            front.offerLast(tail.pollFirst());
+    public void reverse(TreeNode left, TreeNode right, int level) {
+        if (left == null && right == null) {
+            return;
         }
 
-        return front;
+        if (level%2 == 0) {
+            int temp = left.val;
+            left.val = right.val;
+            right.val = temp;
+        }
+
+        reverse(left.left, right.right, level+1);
+        reverse(left.right, right.left, level+1);
+
+        return;
     }
 }

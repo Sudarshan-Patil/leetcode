@@ -3,6 +3,9 @@ class Solution {
         int n = strs.length;
         int res = -1;
         for (int i=0; i<n; i++) {
+            if (strs[i].length() <= res) {
+                continue;
+            }
             int j = 0;
             while (j<strs.length) {
                 if (i!=j) {
@@ -14,7 +17,6 @@ class Solution {
             }
 
             if (j == strs.length) {
-                System.out.println(strs[i]);
                 res = Math.max(res, strs[i].length());
             }
         }

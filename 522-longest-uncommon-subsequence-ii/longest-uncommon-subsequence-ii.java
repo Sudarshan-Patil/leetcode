@@ -4,14 +4,17 @@ class Solution {
         int res = -1;
         for (int i=0; i<n; i++) {
             int j = 0;
-            while (j<n) {
-                if (i!=j && isSubSequence(strs[i], strs[j])) {
-                    break;
+            while (j<strs.length) {
+                if (i!=j) {
+                    if (isSubSequence(strs[i], strs[j])) {
+                        break;
+                    }
                 }
                 j++;
             }
 
-            if (j==n) {
+            if (j == strs.length) {
+                System.out.println(strs[i]);
                 res = Math.max(res, strs[i].length());
             }
         }
@@ -19,15 +22,16 @@ class Solution {
         return res;
     }
 
-    public boolean isSubSequence(String s1, String s2) {
+    public boolean isSubSequence(String A, String B) {
         int i=0;
         int j=0;
-        int n = s1.length();
-        while (j<s2.length()) {
-            if (s1.charAt(i) == s2.charAt(j)) {
+
+        while (j<B.length()) {
+            if (A.charAt(i) == B.charAt(j)) {
                 i++;
             }
-            if (i==n) {
+
+            if (i == A.length()) {
                 return true;
             }
             j++;

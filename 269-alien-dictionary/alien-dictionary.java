@@ -6,19 +6,20 @@ class Solution {
         Queue<Integer> q = new LinkedList<>();
         StringBuilder sb = new StringBuilder();
 
-         for (int i=0; i<words.length; i++) {
-            String s1 = words[i];
-            int idx = 0;
-            while (idx < s1.length()) {
-                hs.add(s1.charAt(idx)-'a');
-                idx++;
-            }
-         }
-
+        int idx = 0;
+        while (idx < words[0].length()) {
+            hs.add(words[0].charAt(idx)-'a');
+            idx++;
+        }
         for (int i=0; i<words.length-1; i++) {
             String s1 = words[i];
             String s2 = words[i+1];
-            int idx = 0;
+            idx = 0;
+            while (idx < s2.length()) {
+                hs.add(s2.charAt(idx)-'a');
+                idx++;
+            }
+            idx = 0;
             if (s1.length() > s2.length() && s1.startsWith(s2)) {
                 return "";
             }

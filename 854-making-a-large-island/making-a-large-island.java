@@ -8,7 +8,7 @@ class Solution {
         int total = row * col;
         int[] parent = new int[total];
         int[] size = new int[total];
-        displayMatrix(grid);
+        // displayMatrix(grid);
         for (int i=0; i<total; i++) {
             parent[i] = i;
             size[i] = 1;

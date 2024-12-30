@@ -5,16 +5,24 @@ class Solution {
     
     // Find the number of good strings of length `end`.
     private int dfs(int end, int zero, int one) {
-        if (dp[end] != -1)
+        if (end == 0) {
+            return 1;
+        }
+
+        if (dp[end] != -1) {
             return dp[end];
+        }
         int count = 0;
-        if (end >= one) {
-            count += dfs(end - one, zero, one);
-        }
         if (end >= zero) {
-            count += dfs(end - zero, zero, one);
+            count += dfs(end-zero, zero, one);
         }
-        dp[end] = count % mod;
+
+        if (end >= one) {
+            count += dfs(end-one, zero, one);
+        }
+
+        dp[end] = count%mod;
+
         return dp[end];
     }
     

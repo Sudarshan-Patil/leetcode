@@ -1,27 +1,30 @@
+class Pair {
+    String node;
+    int distance;
+    Pair(String node, int distance) {
+        this.node = node;
+        this.distance = distance;
+    }
+}
 class Solution {
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        Stack<Integer> counterSt = new Stack<>();
-        Queue<String> q = new LinkedList<>();
+        Queue<Pair> q = new LinkedList<>();
         HashSet<String> hs = new HashSet<>();
-        q.offer(beginWord);
-        counterSt.push(1);
+        q.offer(new Pair(beginWord, 1));
 
         while (!q.isEmpty()) {
             int size = q.size();
-            int counter = counterSt.pop();
-
             while (size-- > 0) {
-                String s = q.poll();
+                Pair p = q.poll();
 
-                if (s.compareTo(endWord) == 0) {
-                    return counter;
+                if (p.node.compareTo(endWord) == 0) {
+                    return p.distance;
                 }
 
                 for (String word: wordList) {
-                    if(mutate(s, word) && !hs.contains(word)) {
+                    if(mutate(p.node, word) && !hs.contains(word)) {
                         hs.add(word);
-                        q.offer(word);
-                        counterSt.push(counter+1);
+                        q.offer(new Pair(word, p.distance+1));
                     }
                 }
             }

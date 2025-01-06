@@ -1,29 +1,39 @@
 class Solution {
     public int minFallingPathSum(int[][] matrix) {
-        int[][] min = new int[matrix.length][matrix.length];
-        for (int j = 0; j < matrix.length; j++) {
-            min[0][j] = matrix[0][j];
+        int a = Integer.MAX_VALUE;
+        int row = matrix.length;
+        int col = matrix[0].length;
+
+        int[][] dp = new int[row][col];
+        for (int i=0; i<row; i++) {
+            Arrays.fill(dp[i], Integer.MAX_VALUE);
         }
 
-        for (int i = 1; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                int temp = Integer.MAX_VALUE;
-                for (int k=j-1; k<=j+1; k++) {
-                    if (k<0 || k>=matrix[0].length) {
-                        continue;
-                    }
-                    temp = Math.min(temp, min[i-1][k]);
-                }
-                min[i][j] = temp + matrix[i][j];
-            }
+        for (int i=0; i<col; i++) {
+            a = Math.min(a, getMin(0, i, matrix, dp));
         }
 
-        int lastRow = min.length - 1;
-        int ans = min[lastRow][0];
-        for (int i=1; i<matrix[0].length; i++) {
-            ans = Math.min(ans, min[lastRow][i]);
+        return a;
+    }
+
+    public int getMin(int row, int col, int[][] matrix, int[][] dp) {
+        if (col < 0 || col >= matrix.length) {
+            return Integer.MAX_VALUE;
         }
 
-        return ans;
+        if (row == matrix.length-1) {
+            return matrix[row][col];
+        }
+
+        if (dp[row][col] != Integer.MAX_VALUE) {
+            return dp[row][col];
+        }
+
+        int a = getMin(row+1, col-1, matrix, dp);
+        int b = getMin(row+1, col, matrix, dp);
+        int c = getMin(row+1, col+1, matrix, dp);
+        dp[row][col] = Math.min(a, Math.min(b, c)) + matrix[row][col];
+
+        return dp[row][col];
     }
 }

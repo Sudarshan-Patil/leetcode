@@ -4,11 +4,10 @@ public class Solution {
         int m = B.length();
         StringBuilder sb = new StringBuilder();
         for(int i=0;i<m;i++){
-            if (sb.length() == 0 || B.charAt(i)!='*') {
-                sb.append(B.charAt(i));
-            } else if (sb.charAt(sb.length()-1) != '*') {
-                sb.append(B.charAt(i));
+            if (i>0 && B.charAt(i) == '*' && sb.charAt(sb.length()-1) == '*') {
+                continue;
             }
+            sb.append(B.charAt(i));
         }
         String s = sb.toString();
         m = s.length();

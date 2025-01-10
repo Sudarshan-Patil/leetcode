@@ -19,10 +19,9 @@ class Solution {
     private int binarySearch(ArrayList<Integer> sub, int num) {
         int left = 0;
         int right = sub.size() - 1;
-        int mid = (left + right) / 2;
         
         while (left < right) {
-            mid = (left + right) / 2;
+            int mid = (left + right) / 2;
             if (sub.get(mid) == num) {
                 return mid;
             }

@@ -1,25 +1,36 @@
 class Solution {
     public int maxProfit(int[] prices) {
         int n = prices.length;
-        int[] dp = new int[n];
-        Arrays.fill(dp, -1);
-        return getMax(0, prices.length, prices, dp);
-    }
-
-    public int getMax(int index, int n, int[] prices, int[] dp) {
-        if (index>=n) {
-            return 0;
+        int[][] dp = new int[n][2];
+        for (int i=0; i<n; i++) {
+            Arrays.fill(dp[i], -1);
         }
         
-        if (dp[index] != -1) {
-            return dp[index];
+        return getMax(0, 1, prices, dp, n);
+    }
+
+    public int getMax(int index, int buy, int[] prices, int[][] dp, int n) {
+        if (index >= n) {
+            return 0;
         }
 
-        int a = getMax(index+1, n, prices, dp);
-        for (int i=index+1; i<n; i++) {
-            a = Math.max(a, getMax(i+2, n, prices, dp) + (prices[i]-prices[index]));
+        if (dp[index][buy] != -1) {
+            return dp[index][buy];
         }
 
-        return dp[index] = a;
+        int max = 0;
+        if (buy == 1) {
+            max = Math.max(
+                -prices[index] + getMax(index+1, 0, prices, dp, n),
+                0 + getMax(index+1, 1, prices, dp, n)
+            );
+        } else {
+            max = Math.max(
+                prices[index] + getMax(index+2, 1, prices, dp, n),
+                0 + getMax(index+1, 0, prices, dp, n)
+            );
+        }
+
+        return dp[index][buy] = max;
     }
 }

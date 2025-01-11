@@ -1,49 +1,58 @@
-import java.util.*;
-
 class Solution {
-    private List<Integer> lisLength(int[] nums) {
-        List<Integer> lis = new ArrayList<>();
-        lis.add(nums[0]);
-        List<Integer> lisLen = new ArrayList<>();
-        for (int i = 0; i < nums.length; i++) {
-            lisLen.add(1);
-        }
-        
-        for (int i = 1; i < nums.length; i++) {
-            if (nums[i] > lis.get(lis.size() - 1)) {
-                lis.add(nums[i]);
-            } else {
-                int index = Collections.binarySearch(lis, nums[i]);
-                if (index < 0) {
-                    index = -(index + 1);
-                }
-                lis.set(index, nums[i]);
-            }
-            lisLen.set(i, lis.size());
-        }
-        return lisLen;
-    }
-    
     public int minimumMountainRemovals(int[] nums) {
         int n = nums.length;
-        
-        List<Integer> lis = lisLength(nums);
-        
-        int[] reversed = new int[n];
-        for (int i = 0; i < n; i++) {
-            reversed[i] = nums[n - 1 - i];
-        }
-        List<Integer> lds = lisLength(reversed);
-        Collections.reverse(lds);
-        
-        int removals = Integer.MAX_VALUE;
-        
-        for (int i = 0; i < n; i++) {
-            if (lis.get(i) > 1 && lds.get(i) > 1) {
-                removals = Math.min(removals, n + 1 - lis.get(i) - lds.get(i));
+        int[] pf = getLIS(nums);
+        reverse(nums);
+        int[] sf = getLIS(nums);
+        reverse(sf);
+        int ans = Integer.MAX_VALUE;
+        for (int i=0; i<nums.length; i++) {
+            if (pf[i] > 1 && sf[i] > 1) {
+                ans = Math.min(
+                    ans,
+                    n-pf[i]-sf[i]+1
+                );
             }
         }
-        
-        return removals;
+
+        return ans;
+    }
+
+    public void display(int[] arr) {
+        for (int i=0; i<arr.length; i++) {
+            System.out.print(arr[i] + " ");
+        }
+        System.out.println();
+        return;
+    }
+
+    public int[] getLIS(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1);
+
+        for (int i=1; i<n; i++) {
+            for (int j=0; j<i; j++) {
+                if (nums[i] > nums[j] && dp[i] < 1 + dp[j]) {
+                    dp[i] = 1 + dp[j];
+                }
+            }
+        }
+
+        return dp;
+    }
+
+    public void reverse(int[] arr) {
+        int i=0;
+        int j=arr.length-1;
+        while (i<j) {
+            int temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+            i++;
+            j--;
+        }
+
+        return;
     }
 }

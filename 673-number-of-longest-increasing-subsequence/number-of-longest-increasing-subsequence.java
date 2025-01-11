@@ -1,14 +1,14 @@
 class Solution {
     public int findNumberOfLIS(int[] nums) {
-        if (nums.length == 1) {
-            return 1;
+        if (nums.length == 0) {
+            return 0;
         }
         int n = nums.length;
         int[] dp = new int[n];
         int[] count = new int[n];
         Arrays.fill(dp, 1);
         Arrays.fill(count, 1);
-        int ans = 0;
+        int ans = 1;
         for (int i=1; i<n; i++) {
             for (int j=0; j<i; j++) {
                 if (nums[i] > nums[j] && dp[i] < 1 + dp[j]) {
@@ -20,8 +20,7 @@ class Solution {
             }
             ans = Math.max(ans, dp[i]);
         }
-        display(dp);
-        display(count);
+        
         int nos = 0;
         for (int i=0; i<n; i++) {
             if (dp[i] == ans) {

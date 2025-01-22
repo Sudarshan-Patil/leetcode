@@ -41,10 +41,7 @@ class Solution {
                 vis[x][y] = true;
                 isWater[x][y] = 1 + p.val;
                 q.offer(new Pair(x, y, isWater[x][y]));
-            } else if (isWater[x][y] > 1 + p.val) {
-                isWater[x][y] = 1 + p.val;
-                q.offer(new Pair(x, y, isWater[x][y]));
-            }
+            } 
         }
        }
 

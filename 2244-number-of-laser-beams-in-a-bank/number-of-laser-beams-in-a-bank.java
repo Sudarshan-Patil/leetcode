@@ -17,7 +17,6 @@ class Solution {
             }
             
             if (sum[prev] != 0) {
-                System.out.println(prev + " : " + sum[prev] + " : " + i + " : " + sum[i]);
                 ans += (sum[prev] * sum[i]);
             }
             prev = i;

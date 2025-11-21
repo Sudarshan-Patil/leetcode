@@ -9,11 +9,7 @@ class Solution {
                 arr.add(i);
                 hm.put(ch, arr);
             } else {
-                if (hm.get(ch).size() == 1) {
-                    hm.get(ch).add(i);
-                } else {
-                    hm.get(ch).set(1, i);
-                }
+                hm.get(ch).add(1, i);
             }
         }
         int count = 0;

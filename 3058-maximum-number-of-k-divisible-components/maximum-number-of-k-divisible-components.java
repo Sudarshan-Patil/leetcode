@@ -44,7 +44,8 @@ class Solution {
         if (!hm.containsKey(current)) {
             return 0;
         }
-        int sum = 0;
+        int sum = values[current];
+        sum %= k;
         for (int i=0; i<hm.get(current).size(); i++) {
             int temp = hm.get(current).get(i);
             if (temp != parent) {
@@ -52,9 +53,6 @@ class Solution {
                 sum %= k;
             }
         }
-
-        sum += values[current];
-        sum %= k;
 
         if (sum == 0) {
             ans++;

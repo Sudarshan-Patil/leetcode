@@ -1,43 +1,62 @@
 class Solution {
     public List<Integer> findAllPeople(int n, int[][] meetings, int firstPerson) {
-        Map<Integer, List<int[]>> meetingMap = new HashMap<>();
+        int[] parent = new int[n];         
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;                  
+        }
+        parent[firstPerson] = 0;            
 
-        for (int[] meeting : meetings) {
-            meetingMap.computeIfAbsent(meeting[0], key -> new ArrayList<>()).add(new int[]{meeting[2], meeting[1]});
-            meetingMap.computeIfAbsent(meeting[1], key -> new ArrayList<>()).add(new int[]{meeting[2], meeting[0]});
+        List<int[]>[] meetingsByTime = new List[100001];
+        for (int[] m : meetings) {
+            int t = m[2];
+            if (meetingsByTime[t] == null) {
+                meetingsByTime[t] = new ArrayList<>();
+            }
+            meetingsByTime[t].add(new int[]{m[0], m[1]});
         }
 
-        Queue<int[]> queue = new LinkedList<>();
-        queue.offer(new int[]{0, 0});
-        queue.offer(new int[]{firstPerson, 0});
+        for (int time = 0; time < meetingsByTime.length; time++) {
+            if (meetingsByTime[time] == null) continue;
 
-        int[] earliest = new int[n];
-        Arrays.fill(earliest, Integer.MAX_VALUE);
-        earliest[0] = earliest[firstPerson] = 0;
+            List<int[]> currentMeetings = meetingsByTime[time];
 
-        while (!queue.isEmpty()) {
-            int[] current = queue.poll();
-            int person = current[0];
-            int time = current[1];
+            for (int[] meet : currentMeetings) {
+                union(meet[0], meet[1], parent);
+            }
 
-            for (int[] neighbor : meetingMap.getOrDefault(person, Collections.emptyList())) {
-                int t = neighbor[0];
-                int nextPerson = neighbor[1];
-
-                if (t >= time && earliest[nextPerson] > t) {
-                    earliest[nextPerson] = t;
-                    queue.offer(new int[]{nextPerson, t});
+            for (int[] meet : currentMeetings) {
+                int a = meet[0], b = meet[1];
+                if (find(a, parent) != 0) {    
+                    parent[a] = a;              
+                }
+                if (find(b, parent) != 0) {
+                    parent[b] = b;
                 }
             }
         }
 
         List<Integer> result = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            if (earliest[i] != Integer.MAX_VALUE) {
+            if (find(i, parent) == 0) {
                 result.add(i);
             }
         }
-
         return result;
+    }
+
+    private void union(int x, int y, int[] parent) {
+        int px = find(x, parent);
+        int py = find(y, parent);
+        if (px != py) {
+            if (px < py) parent[py] = px;
+            else parent[px] = py;
+        }
+    }
+
+    private int find(int x, int[] parent) {
+        if (parent[x] != x) {
+            parent[x] = find(parent[x], parent);
+        }
+        return parent[x];
     }
 }

@@ -5,16 +5,23 @@ class Solution {
         boolean[] cuts = new boolean[N-1];
 
         int ans = 0;
-        search: for (int j = 0; j < W; ++j) {
-            for (int i = 0; i < N-1; ++i)
+        for (int j = 0; j < W; ++j) {
+            boolean sorted = true;
+            for (int i = 0; i < N-1; ++i) {
                 if (!cuts[i] && A[i].charAt(j) > A[i+1].charAt(j)) {
                     ans++;
-                    continue search;
+                    sorted = false;
+                    break;
                 }
+            }
 
-            for (int i = 0; i < N-1; ++i)
-                if (A[i].charAt(j) < A[i+1].charAt(j))
-                    cuts[i] = true;
+            if (sorted) {
+                for (int i = 0; i < N-1; ++i) {
+                   if (A[i].charAt(j) < A[i+1].charAt(j)) {
+                        cuts[i] = true;
+                    }
+                }
+            }
         }
 
         return ans;

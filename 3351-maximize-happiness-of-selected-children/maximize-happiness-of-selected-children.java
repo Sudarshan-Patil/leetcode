@@ -7,6 +7,10 @@ class Solution {
         long ans = 0;
         while (k > 0 && i >= 0) {
             ans += Math.max(0, happiness[i] - carry);
+            if (happiness[i] - carry <= 0) {
+                break;
+            }
+
             carry++;
             k--;
             i--;

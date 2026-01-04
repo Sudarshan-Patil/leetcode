@@ -22,6 +22,10 @@ class Solution {
                     sum += i + (num/i);
                 }
             }
+
+            if (count > 4) {
+                return 0;
+            }
         }
 
         if (count != 4) {

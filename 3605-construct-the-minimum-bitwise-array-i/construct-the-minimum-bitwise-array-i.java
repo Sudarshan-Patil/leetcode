@@ -1,19 +1,18 @@
 class Solution {
+
     public int[] minBitwiseArray(List<Integer> nums) {
         int n = nums.size();
-        int[] ans = new int[n];
-
-        for (int i=0; i<n; i++) {
-            int temp = -1;
-            for (int j=1; j<nums.get(i); j++) {
-                if ((j | (j+1)) == nums.get(i)) {
-                    temp = j;
-                    break;
-                }
+        int[] result = new int[n];
+        for (int i = 0; i < n; i++) {
+            int x = nums.get(i);
+            int res = -1;
+            int d = 1;
+            while ((x & d) != 0) {
+                res = x - d;
+                d <<= 1;
             }
-            ans[i] = temp;
+            result[i] = res;
         }
-
-        return ans;
+        return result;
     }
 }

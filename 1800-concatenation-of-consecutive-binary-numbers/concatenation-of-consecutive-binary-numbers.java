@@ -11,6 +11,12 @@ class Solution {
   }
 
   private int numberOfBits(int n) {
-    return (int) (Math.log(n) / Math.log(2)) + 1;
+    int cnt = 0;
+    while (n>0) {
+        cnt++;
+        n = n>>1;
+    }
+
+    return cnt;
   }
 }

@@ -1,7 +1,6 @@
 class Solution {
     public int minMirrorPairDistance(int[] nums) {
         int ans = nums.length+1;
-        HashMap<Integer, Integer> hm = new HashMap<>();
         HashMap<Integer, Integer> hmr = new HashMap<>();
         for (int i=0; i<nums.length; i++) {
             int t = reverse(nums[i]);

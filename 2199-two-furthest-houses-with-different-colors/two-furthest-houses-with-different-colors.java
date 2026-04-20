@@ -4,15 +4,8 @@ class Solution {
         int ans = 0;
 
         for (int i=0; i<n; i++) {
-            if (colors[i] != colors[n-1]) {
+            if (colors[i] != colors[n-1] || colors[n-1-i] != colors[0]) {
                 ans = Math.max(ans, n-i-1);
-                break;
-            }
-        }
-
-        for (int i=n-1; i>=0; i--) {
-            if (colors[i] != colors[0]) {
-                ans = Math.max(ans, i);
                 break;
             }
         }

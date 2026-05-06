@@ -1,35 +1,24 @@
 class Solution {
-    public char[][] rotateTheBox(char[][] box) {
-        int m = box[0].length;
-        int n = box.length;
-        int row = n-1;
+    public char[][] rotateTheBox(char[][] grid) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+        char[][] res = new char[cols][rows];
+        
+        for (int r = 0; r < cols; r++)
+            for (int c = 0; c < rows; c++)
+                res[r][c] = '.';
 
-        char[][] ans = new char[m][n];
-        for (int i=0; i<m; i++) {
-            Arrays.fill(ans[i], '.');
-        }
-        for (int i=0; i<n; i++) {
-            int prev = -1;
-            for (int j=m-1; j>=0; j--) {
-                if (box[i][j] == '*') {
-                    ans[j][row-i] = '*';
-                    prev = j-1;
-                } else if (box[i][j] == '#') {
-                    if (prev == -1) {
-                        ans[j][row-i] = '#';
-                        prev = j-1;
-                    } else {
-                        ans[prev][row-i] = '#';
-                        prev = prev-1;
-                    }
-                } else {
-                    if (prev == -1) {
-                        prev = j;
-                    }
-                }
+        for (int r = 0; r < rows; r++) {
+            int p = cols - 1;
+            for (int c = cols - 1; c >= 0; c--) {
+                if (grid[r][c] == '*') {
+                    res[c][rows - 1 - r] = '*';
+                    p = c - 1;
+                } else if (grid[r][c] == '#')
+                    res[p--][rows - 1 - r] = '#';
             }
         }
 
-        return ans;
+        return res;
     }
 }

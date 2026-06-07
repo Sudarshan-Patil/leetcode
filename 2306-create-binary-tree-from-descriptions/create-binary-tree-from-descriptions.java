@@ -1,49 +1,46 @@
 class Solution {
 
     public TreeNode createBinaryTree(int[][] descriptions) {
-        // Sets to track unique children and parents
-        Set<Integer> children = new HashSet<>(), parents = new HashSet<>();
-        // Map to store parent to children relationships
-        Map<Integer, List<int[]>> parentToChildren = new HashMap<>();
+        // Maps values to TreeNode pointers
+        Map<Integer, TreeNode> nodeMap = new HashMap<>();
 
-        // Build graph from parent to child, and add nodes to HashSets
-        for (int[] d : descriptions) {
-            int parent = d[0], child = d[1], isLeft = d[2];
-            parents.add(parent);
-            parents.add(child);
-            children.add(child);
-            parentToChildren
-                .computeIfAbsent(parent, l -> new ArrayList<>())
-                .add(new int[] { child, isLeft });
+        // Stores values which are children in the descriptions
+        Set<Integer> children = new HashSet<>();
+
+        // Iterate through descriptions to create nodes and set up tree structure
+        for (int[] description : descriptions) {
+            // Extract parent value, child value, and whether it is a
+            // left child (1) or right child (0)
+            int parentValue = description[0];
+            int childValue = description[1];
+            boolean isLeft = description[2] == 1;
+
+            // Create parent and child nodes if not already created
+            if (!nodeMap.containsKey(parentValue)) {
+                nodeMap.put(parentValue, new TreeNode(parentValue));
+            }
+            if (!nodeMap.containsKey(childValue)) {
+                nodeMap.put(childValue, new TreeNode(childValue));
+            }
+
+            // Attach child node to parent's left or right branch
+            if (isLeft) {
+                nodeMap.get(parentValue).left = nodeMap.get(childValue);
+            } else {
+                nodeMap.get(parentValue).right = nodeMap.get(childValue);
+            }
+
+            // Mark child as a child in the set
+            children.add(childValue);
         }
 
-        // Find the root node by checking which node is in parents but not in children
-        parents.removeAll(children);
-        TreeNode root = new TreeNode(parents.iterator().next());
-
-        // Starting from root, use BFS to construct binary tree
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
-
-        while (!queue.isEmpty()) {
-            TreeNode parent = queue.poll();
-            // Iterate over children of current parent
-            for (int[] childInfo : parentToChildren.getOrDefault(
-                parent.val,
-                Collections.emptyList()
-            )) {
-                int childValue = childInfo[0], isLeft = childInfo[1];
-                TreeNode child = new TreeNode(childValue);
-                queue.offer(child);
-                // Attach child node to its parent based on isLeft flag
-                if (isLeft == 1) {
-                    parent.left = child;
-                } else {
-                    parent.right = child;
-                }
+        // Find and return the root node
+        for (TreeNode node : nodeMap.values()) {
+            if (!children.contains(node.val)) {
+                return node; // Root node found
             }
         }
 
-        return root;
+        return null; // Should not occur according to problem statement
     }
 }

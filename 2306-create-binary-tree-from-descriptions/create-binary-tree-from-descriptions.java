@@ -1,59 +1,49 @@
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
 class Solution {
-    public TreeNode createBinaryTree(int[][] d) {
-        HashSet<TreeNode> hchild = new HashSet();
-        HashSet<TreeNode> hparent = new HashSet();
-        HashMap<Integer, TreeNode> hm = new HashMap<>();
 
-        for (int i=0; i<d.length; i++) {
-            int parent = d[i][0];
-            int child = d[i][1];
-            int dir = d[i][2];
-            TreeNode n, nc;
-            if (hm.containsKey(parent)) {
-                 n = hm.get(parent);
-            } else {
-                 n = new TreeNode(parent);
-                hm.put(parent, n);
-            }
+    public TreeNode createBinaryTree(int[][] descriptions) {
+        // Sets to track unique children and parents
+        Set<Integer> children = new HashSet<>(), parents = new HashSet<>();
+        // Map to store parent to children relationships
+        Map<Integer, List<int[]>> parentToChildren = new HashMap<>();
 
-            if (hm.containsKey(child)) {
-                 nc = hm.get(child);
-            } else {
-                 nc = new TreeNode(child);
-                hm.put(child, nc);
-            }
+        // Build graph from parent to child, and add nodes to HashSets
+        for (int[] d : descriptions) {
+            int parent = d[0], child = d[1], isLeft = d[2];
+            parents.add(parent);
+            parents.add(child);
+            children.add(child);
+            parentToChildren
+                .computeIfAbsent(parent, l -> new ArrayList<>())
+                .add(new int[] { child, isLeft });
+        }
 
-            if (dir == 1) {
-                n.left = nc;
-            } else {
-                n.right = nc;
-            }
+        // Find the root node by checking which node is in parents but not in children
+        parents.removeAll(children);
+        TreeNode root = new TreeNode(parents.iterator().next());
 
-            hchild.add(nc);
-            if (!hchild.contains(n)) {
-                hparent.add(n);
-            }
+        // Starting from root, use BFS to construct binary tree
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
 
-            if (hparent.contains(nc)) {
-                hparent.remove(nc);
+        while (!queue.isEmpty()) {
+            TreeNode parent = queue.poll();
+            // Iterate over children of current parent
+            for (int[] childInfo : parentToChildren.getOrDefault(
+                parent.val,
+                Collections.emptyList()
+            )) {
+                int childValue = childInfo[0], isLeft = childInfo[1];
+                TreeNode child = new TreeNode(childValue);
+                queue.offer(child);
+                // Attach child node to its parent based on isLeft flag
+                if (isLeft == 1) {
+                    parent.left = child;
+                } else {
+                    parent.right = child;
+                }
             }
         }
 
-        return hparent.iterator().next();
+        return root;
     }
 }

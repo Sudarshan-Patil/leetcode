@@ -1,21 +1,22 @@
 class Solution {
+
     public int[] arrayRankTransform(int[] arr) {
-        int[] temp = arr.clone();
+        // Store the rank for each number in arr
+        TreeMap<Integer, List<Integer>> numToIndices = new TreeMap<>();
 
-        Arrays.sort(temp);
-
-        HashMap<Integer, Integer> hm = new HashMap<>();
-        int idx = 1;
-        for (int i=0; i<temp.length; i++) {
-            if (!hm.containsKey(temp[i])) {
-                hm.put(temp[i], idx++);
+        for (int i = 0; i < arr.length; i++) {
+            if (!numToIndices.containsKey(arr[i])) {
+                numToIndices.put(arr[i], new ArrayList<>());
             }
+            numToIndices.get(arr[i]).add(i);
         }
-
-        for (int i=0; i<arr.length; i++) {
-            arr[i] = hm.get(arr[i]);
+        int rank = 1;
+        for (int num : numToIndices.keySet()) {
+            for (int index : numToIndices.get(num)) {
+                arr[index] = rank;
+            }
+            rank++;
         }
-
         return arr;
     }
 }

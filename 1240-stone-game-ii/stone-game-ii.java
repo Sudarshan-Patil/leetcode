@@ -1,27 +1,42 @@
 class Solution {
+
     public int stoneGameII(int[] piles) {
-        int n = piles.length;
-        
-        int[][] dp = new int[n][n + 1];
-        int[] suffixSum = new int[n];
-        suffixSum[n - 1] = piles[n - 1];
-        
-        for (int i = n - 2; i >= 0; i--) {
-            suffixSum[i] = suffixSum[i + 1] + piles[i];
+        // Store the suffix sum of all array elements.
+        int[] suffixSum = Arrays.copyOf(piles, piles.length);
+
+        for (int i = suffixSum.length - 2; i >= 0; i--) {
+            suffixSum[i] += suffixSum[i + 1];
         }
-        
-        for (int i = n - 1; i >= 0; i--) {
-            for (int m = 1; m <= n; m++) {
-                if (i + 2 * m >= n) {
-                    dp[i][m] = suffixSum[i];
-                } else {
-                    for (int x = 1; x <= 2 * m; x++) {
-                        dp[i][m] = Math.max(dp[i][m], suffixSum[i] - dp[i + x][Math.max(m, x)]);
-                    }
-                }
-            }
+        return maxStones(suffixSum, 1, 0, new int[piles.length][piles.length]);
+    }
+
+    private int maxStones(
+        int[] suffixSum,
+        int maxTillNow,
+        int currIndex,
+        int[][] memo
+    ) {
+        // If currIndex + 2*maxTillNow lies outside the array, pick all remaining stones.
+        if (currIndex + 2 * maxTillNow >= suffixSum.length) {
+            return suffixSum[currIndex];
         }
-        
-        return dp[0][1];
+        if (memo[currIndex][maxTillNow] > 0) return memo[currIndex][maxTillNow];
+        int res = Integer.MAX_VALUE;
+        // Find the minimum value res for the next move possible.
+        for (int i = 1; i <= 2 * maxTillNow; i++) {
+            res = Math.min(
+                res,
+                maxStones(
+                    suffixSum,
+                    Math.max(i, maxTillNow),
+                    currIndex + i,
+                    memo
+                )
+            );
+        }
+        // Memoize the difference of suffixSum[p] and res. This denotes the maximum
+        // stones that can be picked.
+        memo[currIndex][maxTillNow] = suffixSum[currIndex] - res;
+        return memo[currIndex][maxTillNow];
     }
 }

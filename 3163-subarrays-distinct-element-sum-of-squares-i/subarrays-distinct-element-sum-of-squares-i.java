@@ -11,7 +11,7 @@ class Solution {
                     bo[val] = true;
                     count++;
                 }
-                ans = ans + count * count;
+                ans += count * count;
             }
         }
 
